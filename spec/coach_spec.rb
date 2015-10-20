@@ -7,6 +7,10 @@ RSpec.describe 'CoachAPI', type: :model do
       expect { Coach::User.all }.to_not raise_error
     end
 
+    it 'lists all users' do
+      expect(Coach::User.all.count).to be > 5
+    end
+
     it 'should find newuser1' do
       expect(Coach::User.find('newuser1')).to be_truthy
     end

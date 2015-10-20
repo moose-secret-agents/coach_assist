@@ -16,7 +16,7 @@ module Coach
       # Pass :search option to only include users matching the search query
       def all(options={})
         eager, search = options.values_at(:eager, :search)
-        response = get '/users', query: { searchCriteria: search }
+        response = get '/users', query: { start: 0, size: 10000, searchCriteria: search }
         JSON.parse(response.body)['users'].map { |u| eager ? Coach::User.new(u).fetch : Coach::User.new(u) }
       end
 
