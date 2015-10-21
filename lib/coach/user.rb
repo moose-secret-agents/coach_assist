@@ -5,11 +5,11 @@ module Coach
     property :password
     property :real_name, from: :realname
     property :email
-    property :partnerships
-    property :subscriptions
+    property :partnerships, default: []
+    property :subscriptions, default: []
 
-    alias_method :old_partnerships, :partnerships
-    alias_method :old_subscriptions, :subscriptions
+    alias_method :partnerships_orig, :partnerships
+    alias_method :subscriptions_orig, :subscriptions
 
     class << self
       # Find all users on server. Pass :eager option to return results eagerly (slow)
@@ -57,11 +57,11 @@ module Coach
     end
 
     def partnerships
-      (old_partnerships || []).map { |p| Coach::Partnership.new(p).fetch }
+      (partnerships_orig || []).map { |p| Coach::Partnership.new(p).fetch }
     end
 
     def subscriptions
-      (old_subscriptions || []).map { |p| Coach::Subscription.new(p).fetch }
+      (subscriptions_orig || []).map { |p| Coach::Subscription.new(p).fetch }
     end
   end
 end

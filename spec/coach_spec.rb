@@ -55,6 +55,32 @@ RSpec.describe 'CoachAPI', type: :model do
       expect(partnership.users).to include user
     end
 
+    it 'can delete user via model' do
+      user = if Coach::User.exists?('housi')
+               Coach::User.find('housi')
+             else
+               Coach::User.create('housi', password: 'housi', email: 'test@housi.ch', realname: 'housi', publicvisible: 2)
+             end
+
+      expect { Coach::User.authenticated('housi', 'housi') { user.destroy } }.to_not raise_error
+      expect(Coach::User.exists?('housi')).to be_falsey
+    end
+
+    it 'can modify user via model' do
+      Coach::User.authenticated('housi', 'housi') { Coach::User.find('housi').destroy } if Coach::User.exists?('housi')
+      user = Coach::User.create('housi', password: 'housi', email: 'test@housi.ch', realname: 'housi', publicvisible: 2)
+
+      expect(user.real_name).to eq('housi')
+
+      expect {
+        Coach::User.authenticated('housi', 'housi') do
+          user.update realname: 'housinew'
+        end
+      }.to_not raise_error
+
+      expect(user.real_name).to eq 'housinew'
+    end
+
   end
 
 end
