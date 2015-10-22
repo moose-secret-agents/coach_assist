@@ -12,7 +12,7 @@ module Coach
 
       # Find user by username
       def find(username)
-        response = client.get "/users/#{username}", basic_auth: @auth
+        response = client.get "/users/#{username}"
         response.code == 200 ? build(JSON.parse(response.body)) : nil
       end
 
@@ -23,7 +23,7 @@ module Coach
 
       def authenticated?(username, password)
         authenticated(username, password) do
-          response = client.get '/authenticateduser', basic_auth: @auth
+          response = client.get '/authenticateduser'
           response.code == 200 ? build(JSON.parse(response.body)) : nil
         end
       end
@@ -31,6 +31,7 @@ module Coach
       # Create new user
       def create(username, attributes={})
         response = client.put "/users/#{username}", body: attributes
+        puts response
         response.code == 201 ? build(JSON.parse(response.body)) : nil
       end
 

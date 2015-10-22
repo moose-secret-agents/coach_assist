@@ -19,5 +19,10 @@ module Coach
     def users
       [user1, user2]
     end
+
+    def confirm
+      client.assert_authenticated!
+      client.put clean_uri
+    end
   end
 end

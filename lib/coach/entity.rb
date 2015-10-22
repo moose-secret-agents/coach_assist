@@ -14,7 +14,7 @@ module Coach
       return self if @fetched
       assert_has_uri!
 
-      response = @client.get clean_uri
+      response = client.get clean_uri
       update_attributes! JSON.parse(response.body)
 
       @fetched = true
@@ -23,12 +23,12 @@ module Coach
 
     def destroy
       assert_has_uri!
-      @client.delete clean_uri
+      client.delete clean_uri
     end
 
     def update(attributes={})
       assert_has_uri!
-      response = @client.put clean_uri, body: attributes
+      response = client.put clean_uri, body: attributes
       update_attributes! JSON.parse(response.body) if response.code == 200
     end
 
@@ -37,7 +37,7 @@ module Coach
     end
 
     def set_client(client)
-      @client = client
+      self.client = client
       self
     end
 

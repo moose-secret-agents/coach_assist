@@ -2,11 +2,11 @@ require 'spec_helper'
 
 RSpec.describe 'CoachAPI', type: :model do
 
+  before(:each) do
+    @coach = Coach::Client.new
+  end
+
   context 'Users' do
-    
-    before(:each) do
-      @coach = Coach::Client.new
-    end
     
     it 'returns list of all users' do
       expect { @coach.users.all }.to_not raise_error
@@ -114,6 +114,56 @@ RSpec.describe 'CoachAPI', type: :model do
 
     end
 
+    it 'can create new user' do
+      @coach.authenticated('housi', 'housi') do
+        @coach.users.find('housi').destroy if @coach.users.exists?('housi')
+        user = @coach.users.create('housi', password: 'housi', email: 'test@housi.ch', realname: 'housi', publicvisible: 2)
+
+        expect(user.username).to eq('housi')
+      end
+    end
+
+  end
+
+  context 'Partnerships' do
+    it 'can create partnership' do
+      @coach.authenticated('testaschi', 'testaschi') {
+        @coach.partnerships.find('testaschi','guschti').try(:destroy)
+        @coach.users.find('testaschi').try(:destroy)
+      }
+
+      @coach.authenticated('guschti', 'guschti') { @coach.users.find('guschti').try(:destroy) }
+
+      testaschi = @coach.users.create('testaschi', password: 'testaschi', email: 'testaschi@testaschi.testaschi', realname: 'testaschi Hunziker', publicvisible: 2)
+      guschti = @coach.users.create('guschti', password: 'guschti', email: 'guschti@guschti.guschti', realname: 'Guschti Kyburz', publicvisible: 2)
+
+      @coach.authenticated('testaschi', 'testaschi') do
+        @ps = @coach.partnerships.create(testaschi.username, guschti.username, publicvisible: 2)
+
+        expect(@coach.partnerships.exists?('testaschi', 'guschti')).to be_truthy
+        expect(@ps.user1.username).to eq('testaschi')
+        expect(@ps.user2.username).to eq('guschti')
+        expect(@ps.confirmed_by_user1).to be(true)
+        expect(@ps.confirmed_by_user2).to be(false)
+        expect(@ps.user1.partnerships.first.user1.username).to eq('testaschi')
+
+        testaschi.fetch
+        guschti.fetch
+
+        expect(testaschi.partnerships.size).to be > 0
+        expect(guschti.partnerships.size).to be > 0
+
+        expect(testaschi.pending_partnerships.size).to be 0
+        expect(guschti.pending_partnerships.size).to be 1
+      end
+
+      @coach.authenticated('guschti', 'guschti') do
+        guschti.confirm_partnership(@ps)
+
+        expect(@ps.fetch.confirmed_by_user2).to be(true)
+      end
+
+    end
   end
 
 end

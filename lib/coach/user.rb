@@ -18,5 +18,13 @@ module Coach
     def subscriptions
       (subscriptions_orig || []).map { |p| client.subscriptions.build(p).fetch }
     end
+
+    def pending_partnerships
+      partnerships.select { |ps| ps.user2.username == self.username && !ps.confirmed_by_user2}
+    end
+
+    def confirm_partnership(ps)
+      ps.confirm
+    end
   end
 end

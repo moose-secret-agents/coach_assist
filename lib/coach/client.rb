@@ -38,6 +38,10 @@ module Coach
       !!@auth
     end
 
+    def assert_authenticated!
+      raise 'Method must be authenticated first!' unless has_auth?
+    end
+
     def users
       @user_finder || (@user_finder = Finders::UserFinder.new(self))
     end
