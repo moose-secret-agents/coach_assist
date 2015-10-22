@@ -9,11 +9,11 @@ module Coach
     alias_method :old_user2, :user2
 
     def user1
-      Coach::User.new(old_user1).fetch
+      client.users.build(old_user1).fetch
     end
 
     def user2
-      Coach::User.new(old_user2).fetch
+      client.users.build(old_user2).fetch
     end
 
     def users
