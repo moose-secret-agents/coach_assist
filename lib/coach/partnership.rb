@@ -4,9 +4,11 @@ module Coach
     property :confirmed_by_user2, from: :userconfirmed2
     property :user1
     property :user2
+    property :subscriptions
 
     alias_method :old_user1, :user1
     alias_method :old_user2, :user2
+    alias_method :subscriptions_orig, :subscriptions
 
     def user1
       client.users.build(old_user1).fetch
@@ -18,6 +20,10 @@ module Coach
 
     def users
       [user1, user2]
+    end
+
+    def subscriptions
+      (subscriptions_orig || []).map { |s| client.subscriptions.build(s).fetch }
     end
 
     def confirm

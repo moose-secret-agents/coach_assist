@@ -26,5 +26,25 @@ module Coach
     def confirm_partnership(ps)
       ps.confirm
     end
+
+    def subscribe_to(sport)
+      raise 'Can only subscribe to :running or :cycling' unless Coach::Subscription.types.include? sport.to_sym
+      client.subscriptions.create(self.username, sport, publicvisible: 2)
+    end
+
+    def destroy
+      destroy_partnerships
+      destroy_subscriptions
+      super
+    end
+
+    private
+      def destroy_partnerships
+        partnerships.each(&:destroy)
+      end
+
+      def destroy_subscriptions
+        subscriptions.each(&:destroy)
+      end
   end
 end

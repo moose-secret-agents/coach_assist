@@ -11,13 +11,11 @@ module Coach
 
     # Fetch an entity based on its uri. Each entity containing a valid uri will be retrievable through this method
     def fetch
-      return self if @fetched
       assert_has_uri!
 
       response = client.get clean_uri
       update_attributes! JSON.parse(response.body)
 
-      @fetched = true
       self
     end
 
@@ -30,10 +28,6 @@ module Coach
       assert_has_uri!
       response = client.put clean_uri, body: attributes
       update_attributes! JSON.parse(response.body) if response.code == 200
-    end
-
-    def fetched?
-      !!@fetched
     end
 
     def set_client(client)

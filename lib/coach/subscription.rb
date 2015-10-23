@@ -10,5 +10,9 @@ module Coach
     def user
       client.users.build(old_user).fetch
     end
+
+    def self.types
+      [:running, :cycling]
+    end
   end
 end
