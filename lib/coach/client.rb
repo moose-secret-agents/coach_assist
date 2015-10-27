@@ -54,5 +54,9 @@ module Coach
       @sub_finder || (@sub_finder = Finders::SubscriptionFinder.new(self))
     end
 
+    def entries
+      @entry_finder || (@entry_finder = Finders::EntryFinder.new(self))
+    end
+
   end
 end
