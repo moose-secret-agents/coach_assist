@@ -13,7 +13,7 @@ module Coach
     end
 
     def post(path, options={})
-     Client.post(path, options.merge(basic_auth: @auth))
+      Client.post(path, options.merge(basic_auth: @auth))
     end
 
     def put(path, options={})

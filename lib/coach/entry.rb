@@ -5,6 +5,7 @@ module Coach
     property :subscription
     property :rounds, from: :numberofrounds
     property :distance, from: :courselength
+    property :duration, from: :entryduration
 
     alias_method :subscription_orig, :subscription
 

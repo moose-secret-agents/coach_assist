@@ -38,7 +38,7 @@ module Coach
       super
     end
 
-    private
+
       def destroy_partnerships
         partnerships.each(&:destroy)
       end

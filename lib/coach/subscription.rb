@@ -17,7 +17,7 @@ module Coach
     end
 
     def entries
-      (entries_orig || []).map { |e| client.entries.build(e) }
+      (entries_orig || []).map { |e| client.entries.build(e).fetch }
     end
   end
 end
