@@ -16,13 +16,13 @@ module Coach
       def create(username, sport, attributes={})
         client.assert_authenticated!
 
-        body = {}.merge({ "entry#{sport}".to_s => attributes})
+        body = { "entry#{sport}".to_s => attributes }
         response = client.post "/users/#{username}/#{sport}", body: body.to_json, headers: {'Content-Type' => 'application/json'}
-        [200, 201].include?(response.code) ? build(JSON.parse(response.body)) : nil
+        response.code.in?([200, 201]) ? build(JSON.parse(response.body).merge(uri: response.response['Location'])).fetch : nil
       end
 
       def build(attributes={})
-        attrs = attributes['entryrunning'] || attributes['entrycycling']
+        attrs = attributes['entryrunning'] || attributes['entrycycling'] || attributes
 
         e = Coach::Entry.new(attrs)
         e.set_client client

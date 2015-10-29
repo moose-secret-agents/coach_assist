@@ -31,7 +31,7 @@ module Coach
       # Create new user
       def create(username, attributes={})
         response = client.put "/users/#{username}", body: attributes
-        [200, 201].include?(response.code) ? build(JSON.parse(response.body)) : nil
+        response.code.in?([200, 201]) ? build(JSON.parse(response.body)) : nil
       end
 
       def find_or_create(username, attributes={})

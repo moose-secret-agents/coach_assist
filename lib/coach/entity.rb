@@ -47,9 +47,7 @@ module Coach
 
       def filter_response_body(body)
         # This is necessary because of the shitty REST implemenation by CyberCoach :(
-        entry_airbuses = body.values_at('entryrunning', 'entrycycling').compact.first
-
-        entry_airbuses || body
+        body['entryrunning'] || body['entrycycling'] || body
       end
   end
 end
