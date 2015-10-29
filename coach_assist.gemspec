@@ -24,6 +24,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.3"
 
   spec.add_dependency 'httparty', '~> 0.13.7'
-  spec.add_dependency 'hashie', '~> 3.4.2'
+  spec.add_dependency 'hashie', '~> 3.4'
   spec.add_dependency 'activesupport', '~> 4.2'
 end
