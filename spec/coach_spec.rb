@@ -12,6 +12,14 @@ RSpec.describe 'CoachAPI', type: :model do
   end
 
   context 'Users' do
+    it 'authenticates user' do
+      expect(@coach.users.authenticated?('trackingtest', 'trackingtest')).to be true
+    end
+
+    it 'returns authenticated user' do
+      expect(@coach.users.authenticated('trackingtest', 'trackingtest')).to be_a Coach::User
+    end
+
     it 'returns list of all users' do
       expect { @coach.users.all }.to_not raise_error
     end

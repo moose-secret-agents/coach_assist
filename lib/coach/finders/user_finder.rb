@@ -22,7 +22,14 @@ module Coach
       end
 
       def authenticated?(username, password)
-        authenticated(username, password) do
+        client.authenticated(username, password) do
+          response = client.get '/authenticateduser'
+          response.code == 200
+        end
+      end
+
+      def authenticated(username, password)
+        client.authenticated(username, password) do
           response = client.get '/authenticateduser'
           response.code == 200 ? build(JSON.parse(response.body)) : nil
         end

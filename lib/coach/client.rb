@@ -30,8 +30,9 @@ module Coach
 
     def authenticated(username, password, &block)
       authenticate(username, password)
-      block.call
+      block_result = block.call
       @auth = nil
+      block_result
     end
 
     def has_auth?
