@@ -6,3 +6,5 @@ It is used in the main [Sweat-to-Score project](https://github.com/moose-secret-
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+Available on [RubyGems.org](https://rubygems.org/gems/coach_assist/versions/0.2.2)
+
